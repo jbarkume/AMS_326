@@ -1,5 +1,5 @@
 import math
-from decimal import Decimal, getcontext
+import timeit
 
 
 def truncate(num, precision):
@@ -25,22 +25,39 @@ def f_prime(x):
 
 # Recursively divides size of interval by two so that the interval still brackets the root
 # Is called until the midpoint of the interval has a function value that is within k of zero
-def bisection_method(low, high, k):
-    if (f(low) * f(high)) >= 0:
-        print("There is no root in this interval")
-        return
-    mid = (low + high) / 2
 
-    # First check if f(mid) is sufficiently close enough to zero
-    if -k <= f(mid) <= k:
-        return mid
+class Bisection:
 
-    # Then check if f(mid) has opposite sign to f(low), then set new interval to [low, mid] and call bisection
-    # method recursively. If not, call bisection method with interval [mid, high]
-    elif f(low) * f(mid) < 0:
-        return bisection_method(low, mid, k)
-    else:
-        return bisection_method(mid, high, k)
+    iterations = 0
+    clocktime = 0
+
+    def __init__(self, a, b, k):
+        self.a = a # lower boundary
+        self.b = b # upper boundary
+        self.k = k # sufficiently close enough value to zero
+
+    def bisection_method(self):
+        self.iterations = 0
+        return self.bisection_method_help(self.a, self.b, self.k)
+
+    def bisection_method_help(self, low, high, k):
+        if (f(low) * f(high)) >= 0:
+            print("There is no root in this interval")
+            return
+
+        mid = (low + high) / 2
+
+        # First check if f(mid) is sufficiently close enough to zero
+        if -k <= f(mid) <= k:
+            return mid
+
+        self.iterations += 1
+        # Then check if f(mid) has opposite sign to f(low), then set new interval to [low, mid] and call bisection
+        # method recursively. If not, call bisection method with interval [mid, high]
+        if f(low) * f(mid) < 0:
+            return self.bisection_method_help(low, mid, k)
+
+        return self.bisection_method_help(mid, high, k)
 
 
 def newtons_method(x0, k):
@@ -75,28 +92,17 @@ b2 = x2 + delta
 a3 = x3 - delta
 b3 = x3 + delta
 
-k = .001 # The interval that f(x) must be within to be sufficiently close to a root
+k = .0001 # The interval that f(x) must be within to be sufficiently close to a root
 
 precision = 6 # The decimal precision
 
-print("Bisection Method")
+root1_bisect = Bisection(a1, b1, k)
 
-root1_bisect = truncate(bisection_method(a1, b1, k), precision)
-print("\nRoot One: " + str(root1_bisect))
+root2_bisect = Bisection(a2, b2, k)
 
-root2_bisect = truncate(bisection_method(a2, b2, k), precision)
-print("\nRoot Two: " + str(root2_bisect))
+root3_bisect = Bisection(a3, b3, k)
 
-root3_bisect = truncate(bisection_method(a3, b3, k), precision)
-print("\nRoot Three: " + str(root3_bisect))
+t = timeit.repeat(lambda: root1_bisect.bisection_method(), number=10, repeat=20)
 
-print("\nNewtons Method")
-
-root1_newton = truncate(newtons_method(x1, k), precision)
-print("\nRoot One: " + str(root1_newton))
-
-root2_newton = truncate(newtons_method(x2, k), precision)
-print("\nRoot Two: " + str(root2_newton))
-
-root3_newton = truncate(newtons_method(x3, k), precision)
-print("\nRoot Three: " + str(root3_newton))
+root1_bisect.clocktime = sum(t) / len(t)
+root1 = truncate(root1_bisect.bisection_method(), precision)
