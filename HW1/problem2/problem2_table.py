@@ -11,9 +11,9 @@ fig = plt.figure(figsize=(8, 2))
 ax = fig.add_subplot(111)
 
 ax.table(cellText=df.values,
-             colLabels=df.columns,
-             loc="center"
-             )
+         colLabels=df.columns,
+         loc="center"
+         )
 ax.set_title("Area of Disc")
 
 ax.axis("off")
