@@ -18,7 +18,7 @@ def f_top(x):
 def f_bottom(x):
     root = 1 - (8 * (x ** 2))
     if root <= 0:
-        root = .0000001
+        root = .00000000001
     y = -math.sqrt(root) / (2 * math.sqrt(2))
     return y
 
@@ -101,7 +101,7 @@ actual_area = math.pi / 8
 
 print("Actual Area:\n" + str(actual_area))
 
-N = 100
+N = 10000
 rec = rectangle_method(N)
 trapezoid = trapezoid_method(N)
 monte = monte_carlo(N)

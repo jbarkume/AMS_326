@@ -27,14 +27,13 @@ def f_prime(x):
 # Is called until the midpoint of the interval has a function value that is within k of zero
 
 class Bisection:
-
     iterations = 0
     clocktime = 0
 
     def __init__(self, a, b, k):
-        self.a = a # lower boundary
-        self.b = b # upper boundary
-        self.k = k # sufficiently close enough value to zero
+        self.a = a  # lower boundary
+        self.b = b  # upper boundary
+        self.k = k  # sufficiently close enough value to zero
 
     def bisection_method(self):
         self.iterations = 0
@@ -92,9 +91,9 @@ b2 = x2 + delta
 a3 = x3 - delta
 b3 = x3 + delta
 
-k = .0001 # The interval that f(x) must be within to be sufficiently close to a root
+k = .0001  # The interval that f(x) must be within to be sufficiently close to a root
 
-precision = 6 # The decimal precision
+precision = 6  # The decimal precision
 
 root1_bisect = Bisection(a1, b1, k)
 
@@ -102,7 +101,22 @@ root2_bisect = Bisection(a2, b2, k)
 
 root3_bisect = Bisection(a3, b3, k)
 
-t = timeit.repeat(lambda: root1_bisect.bisection_method(), number=10, repeat=20)
+t1 = timeit.repeat(lambda: root1_bisect.bisection_method(), number=10, repeat=20)
+t2 = timeit.repeat(lambda: root2_bisect.bisection_method(), number=10, repeat=20)
+t3 = timeit.repeat(lambda: root3_bisect.bisection_method(), number=10, repeat=20)
 
-root1_bisect.clocktime = sum(t) / len(t)
+root1_bisect.clocktime = sum(t1) / len(t1)
 root1 = truncate(root1_bisect.bisection_method(), precision)
+
+root2_bisect.clocktime = sum(t2) / len(t2)
+root2 = truncate(root2_bisect.bisection_method(), precision)
+
+root3_bisect.clocktime = sum(t3) / len(t3)
+root3 = truncate(root3_bisect.bisection_method(), precision)
+
+# Dictionary containing the bisection roots as keys mapped to triples of their
+# corresponding values, iterations, and clock-times
+bisect_roots = {root1_bisect: (root1, root1_bisect.iterations, root1_bisect.clocktime),
+                root2_bisect: (root2, root2_bisect.iterations, root2_bisect.clocktime),
+                root3_bisect: (root3, root3_bisect.iterations, root3_bisect.clocktime)}
+
