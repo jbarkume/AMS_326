@@ -58,19 +58,30 @@ class Bisection:
 
         return self.bisection_method_help(mid, high, k)
 
+class Newton:
 
-def newtons_method(x0, k):
-    num = f(x0)
-    # print("x0 : " + str(x0))
-    if -k <= num <= k:
-        return x0
-    denom = f_prime(x0)
-    if denom == 0:
-        print("Did not converge")
-        return
-    x1 = x0 - (num / denom)
-    # print("x1 : " + str(x1))
-    return newtons_method(x1, k)
+    iterations = 0
+    clocktime = 0
+
+    def __init__(self, x0, k):
+        self.x0 = x0
+        self.k = k
+
+    def newtons_method(self):
+        self.iterations = 0
+        return self.newtons_method_help(self.x0, k)
+
+    def newtons_method_help(self, x0, k):
+        num = f(x0)
+        if -k <= num <= k:
+            return x0
+        denom = f_prime(x0)
+        if denom == 0:
+            print("Did not converge")
+            return
+        x1 = x0 - (num / denom)
+        self.iterations += 1
+        return self.newtons_method_help(x1, k)
 
 
 # x1 is the initial guess of the root from looking at the function
@@ -95,6 +106,9 @@ k = .0001  # The interval that f(x) must be within to be sufficiently close to a
 
 precision = 6  # The decimal precision
 
+
+# lines 98 - 121 gather all the data needed for storing the bisection method roots
+# and their times, values, iterations etc.
 root1_bisect = Bisection(a1, b1, k)
 
 root2_bisect = Bisection(a2, b2, k)
@@ -120,3 +134,24 @@ bisect_roots = {root1_bisect: (root1, root1_bisect.iterations, root1_bisect.cloc
                 root2_bisect: (root2, root2_bisect.iterations, root2_bisect.clocktime),
                 root3_bisect: (root3, root3_bisect.iterations, root3_bisect.clocktime)}
 
+#
+root4_newtons = Newton(x1, k)
+root5_newtons = Newton(x2, k)
+root6_newtons = Newton(x3, k)
+
+t4 = timeit.repeat(lambda: root4_newtons.newtons_method(), number=10, repeat=20)
+t5 = timeit.repeat(lambda: root5_newtons.newtons_method(), number=10, repeat=20)
+t6 = timeit.repeat(lambda: root6_newtons.newtons_method(), number=10, repeat=20)
+
+root4_newtons.clocktime = sum(t4) / len(t4)
+root4 = truncate(root4_newtons.newtons_method(), precision)
+
+root5_newtons.clocktime = sum(t5) / len(t5)
+root5 = truncate(root5_newtons.newtons_method(), precision)
+
+root6_newtons.clocktime = sum(t6) / len(t6)
+root6 = truncate(root6_newtons.newtons_method(), precision)
+
+newton_roots = {root4_newtons: (root4, root4_newtons.iterations, root4_newtons.clocktime),
+                root5_newtons: (root5, root5_newtons.iterations, root5_newtons.clocktime),
+                root6_newtons: (root6, root6_newtons.iterations, root6_newtons.clocktime)}
