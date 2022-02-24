@@ -1,5 +1,11 @@
 import math
 import random
+import timeit
+
+
+def truncate(num, precision):
+    integer = int(num * 10 ** precision) / 10 ** precision
+    return float(integer)
 
 
 # function equation for disc is: (x-.25)**2 + (y-.25)**2 = .125
@@ -99,13 +105,14 @@ def monte_carlo(N):
 
 actual_area = math.pi / 8
 
-print("Actual Area:\n" + str(actual_area))
+precision = 6
 
 N = 10000
-rec = rectangle_method(N)
-trapezoid = trapezoid_method(N)
-monte = monte_carlo(N)
 
-print("\nRectangle Method:\n" + str(rec))
-print("\nTrapezoid Method:\n" + str(trapezoid))
-print("\nMonte Carlo Method:\n" + str(monte))
+t1 = timeit.repeat(lambda: rectangle_method(N), number=10, repeat=10)
+t2 = timeit.repeat(lambda: trapezoid_method(N), number=10, repeat=10)
+t3 = timeit.repeat(lambda: monte_carlo(N), number=10, repeat=10)
+
+methods = {'Rectangle': (truncate(rectangle_method(N), precision), sum(t1) / len(t1)),
+           'Trapezoid': (truncate(trapezoid_method(N), precision), sum(t2) / len(t2)),
+           'Monte Carlo': (truncate(monte_carlo(N), precision), sum(t3) / len(t3))}
