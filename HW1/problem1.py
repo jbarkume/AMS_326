@@ -1,19 +1,25 @@
 import math
+from decimal import Decimal, getcontext
+
+
+def truncate(num, precision):
+    integer = int(num * 10 ** precision) / 10 ** precision
+    return float(integer)
 
 
 # f(x) = (2.020**(-x**3)) - (x**4 * sin(x**3)) - 1.949
 # Interval of x: [-1, 2]
 
 def f(x):
-    term1 = 2.020 ** (-(x ** 3))
+    term1 = 2.02 ** (-(x ** 3))
     term2 = x ** 4 * math.sin(x ** 3)
     term3 = 1.949
     return term1 - term2 - term3
 
 
 def f_prime(x):
-    term1 = -1 * (3 * (math.log(101 / 50.0, math.e)) * x ** 2 * 50 ** (x ** 3))
-    term2 = -1 * (3 * x ** 6 * math.cos(x ** 3) - 4 * x ** 3 * math.sin(x ** 3))
+    term1 = -3 * (math.log(101) - math.log(50)) * (x ** 2) * (50 ** (x ** 3)) / (101 ** (x ** 3))
+    term2 = -1 * (3 * x ** 6 * math.cos(x ** 3) + 4 * x ** 3 * math.sin(x ** 3))
     return term1 + term2
 
 
@@ -38,14 +44,16 @@ def bisection_method(low, high, k):
 
 
 def newtons_method(x0, k):
-    if -k <= f(x0) <= k:
+    num = f(x0)
+    # print("x0 : " + str(x0))
+    if -k <= num <= k:
         return x0
     denom = f_prime(x0)
     if denom == 0:
         print("Did not converge")
         return
-    num = f(x0)
     x1 = x0 - (num / denom)
+    # print("x1 : " + str(x1))
     return newtons_method(x1, k)
 
 
@@ -67,13 +75,28 @@ b2 = x2 + delta
 a3 = x3 - delta
 b3 = x3 + delta
 
-k = .001
+k = .001 # The interval that f(x) must be within to be sufficiently close to a root
 
-root1_bisect = bisection_method(a1, b1, k)
-print(root1_bisect)
+precision = 6 # The decimal precision
 
-root2_bisect = bisection_method(a2, b2, k)
-print(root2_bisect)
+print("Bisection Method")
 
-root3_bisect = bisection_method(a3, b3, k)
-print(root3_bisect)
+root1_bisect = truncate(bisection_method(a1, b1, k), precision)
+print("\nRoot One: " + str(root1_bisect))
+
+root2_bisect = truncate(bisection_method(a2, b2, k), precision)
+print("\nRoot Two: " + str(root2_bisect))
+
+root3_bisect = truncate(bisection_method(a3, b3, k), precision)
+print("\nRoot Three: " + str(root3_bisect))
+
+print("\nNewtons Method")
+
+root1_newton = truncate(newtons_method(x1, k), precision)
+print("\nRoot One: " + str(root1_newton))
+
+root2_newton = truncate(newtons_method(x2, k), precision)
+print("\nRoot Two: " + str(root2_newton))
+
+root3_newton = truncate(newtons_method(x3, k), precision)
+print("\nRoot Three: " + str(root3_newton))
