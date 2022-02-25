@@ -5,7 +5,7 @@ from problem2 import *
 
 precision = 4  # Decimal precision
 
-N = 1000000  # Iterations
+N = 100000  # Iterations
 
 # ----------------------------------------------------------
 

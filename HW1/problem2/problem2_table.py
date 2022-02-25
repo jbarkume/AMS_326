@@ -1,5 +1,7 @@
+import math
 import matplotlib.pyplot as plt
 import pandas as pd
+from problem2 import actual_area
 
 
 # Takes a dictionary and prints a table
@@ -15,7 +17,7 @@ def print_table(methods, N):
              colLabels=df.columns,
              loc="center"
              )
-    ax.set_title("N (Iterations) = " + str(N))
+    ax.set_title("A = " + str(actual_area) + "\n\n" + "N (Iterations) = " + str(N))
 
     ax.axis("off")
 

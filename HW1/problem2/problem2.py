@@ -104,7 +104,7 @@ def monte_carlo(N):
     return answer
 
 
-actual_area = math.pi / 4
+actual_area = truncate(math.pi / 4, 5)
 
 
 def run_methods(N, precision):
