@@ -9,23 +9,24 @@ def truncate(num, precision):
 
 
 # function equation for disc is: (x-.25)**2 + (y-.25)**2 = .125
-# for area purposes, we can make this equivalient to x**2 + y**2 = .125
+# Subtracting this from the kidney equation, we get the nice circle: x**2 + (y - .5)**2 = .25
+# For area purposes, we can shift this towards the origin to get: x**2 + y**2 = .25
 # We can split this into two equations: one for top half of y and one for bottom half
 
-
+# Top Semi-circle for f(x)
 def f_top(x):
-    root = 1 - (8 * (x ** 2))
+    root = 1 - (4 * (x ** 2))
     if root <= 0:
         root = .00000000000001  # This is for when we get very high values of x that will result in a negative root
-    y = math.sqrt(root) / (2 * math.sqrt(2))
+    y = math.sqrt(root) / 2
     return y
 
 
 def f_bottom(x):
-    root = 1 - (8 * (x ** 2))
+    root = 1 - (4 * (x ** 2))
     if root <= 0:
         root = .00000000001
-    y = -math.sqrt(root) / (2 * math.sqrt(2))
+    y = -math.sqrt(root) / 2
     return y
 
 
@@ -33,8 +34,8 @@ def f_bottom(x):
 # N is the number of rectangles
 def rectangle_method(N):
     # calculate length of each sub-interval
-    a = -math.sqrt(.125)
-    b = math.sqrt(.125)
+    a = -0.5
+    b = .5
     change_x = (b - a) / N
 
     # loop N times, calculating the area of rectangle using f_top(x) to get area of top semi-circle
@@ -57,8 +58,8 @@ def rectangle_method(N):
 # N is the number of trapezoids
 def trapezoid_method(N):
     # calculate length of each sub-interval
-    a = -math.sqrt(.125)
-    b = math.sqrt(.125)
+    a = -0.5
+    b = .5
     change_x = (b - a) / N
 
     reimann_sum = 0
@@ -84,15 +85,15 @@ def monte_carlo(N):
 
     for i in range(N):
         # The bounds on x value is (-.2, .8) and same for y value
-        x = random.uniform(-.2, .8)
-        y = random.uniform(-.2, .8)
+        x = random.uniform(-.5, .5)
+        y = random.uniform(-.5, .5)
 
         # calculate left-hand side of function
-        lhs = (x - .25) ** 2 + (y - .25) ** 2
+        lhs = x ** 2 + y ** 2
 
         # if lhs is less than or equal to rhs = .125, then increment disc counter
         # then increment square counter no matter what
-        if lhs <= .125:
+        if lhs <= .25:
             disc_dot_count += 1
         square_dot_count += 1
 
@@ -103,11 +104,11 @@ def monte_carlo(N):
     return answer
 
 
-actual_area = math.pi / 8
+actual_area = math.pi / 4
 
 precision = 6
 
-N = 10000
+N = 1000000  # N = 1000000 gave monte carlo accuracy of 3 digits
 
 t1 = timeit.repeat(lambda: rectangle_method(N), number=10, repeat=10)
 t2 = timeit.repeat(lambda: trapezoid_method(N), number=10, repeat=10)
