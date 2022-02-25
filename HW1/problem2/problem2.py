@@ -106,14 +106,13 @@ def monte_carlo(N):
 
 actual_area = math.pi / 4
 
-precision = 6
 
-N = 1000000  # N = 1000000 gave monte carlo accuracy of 3 digits
+def run_methods(N, precision):
+    t1 = timeit.repeat(lambda: rectangle_method(N), number=5, repeat=5)
+    t2 = timeit.repeat(lambda: trapezoid_method(N), number=5, repeat=5)
+    t3 = timeit.repeat(lambda: monte_carlo(N), number=5, repeat=5)
 
-t1 = timeit.repeat(lambda: rectangle_method(N), number=10, repeat=10)
-t2 = timeit.repeat(lambda: trapezoid_method(N), number=10, repeat=10)
-t3 = timeit.repeat(lambda: monte_carlo(N), number=10, repeat=10)
-
-methods = {'Rectangle': (truncate(rectangle_method(N), precision), sum(t1) / len(t1)),
-           'Trapezoid': (truncate(trapezoid_method(N), precision), sum(t2) / len(t2)),
-           'Monte Carlo': (truncate(monte_carlo(N), precision), sum(t3) / len(t3))}
+    methods = {'Rectangle': (truncate(rectangle_method(N), precision), sum(t1) / len(t1)),
+               'Trapezoid': (truncate(trapezoid_method(N), precision), sum(t2) / len(t2)),
+               'Monte Carlo': (truncate(monte_carlo(N), precision), sum(t3) / len(t3))}
+    return methods
