@@ -107,12 +107,12 @@ def monte_carlo(N):
 actual_area = truncate(math.pi / 4, 5)
 
 
-def run_methods(N, precision):
-    t1 = timeit.repeat(lambda: rectangle_method(N), number=5, repeat=5)
-    t2 = timeit.repeat(lambda: trapezoid_method(N), number=5, repeat=5)
-    t3 = timeit.repeat(lambda: monte_carlo(N), number=5, repeat=5)
+def run_methods(N1, N2, N3, precision):
+    t1 = timeit.repeat(lambda: rectangle_method(N1), number=5, repeat=5)
+    t2 = timeit.repeat(lambda: trapezoid_method(N2), number=5, repeat=5)
+    t3 = timeit.repeat(lambda: monte_carlo(N3), number=5, repeat=5)
 
-    methods = {'Rectangle': (truncate(rectangle_method(N), precision), sum(t1) / len(t1)),
-               'Trapezoid': (truncate(trapezoid_method(N), precision), sum(t2) / len(t2)),
-               'Monte Carlo': (truncate(monte_carlo(N), precision), sum(t3) / len(t3))}
+    methods = {'Rectangle': (N1, truncate(rectangle_method(N1), precision), sum(t1) / len(t1)),
+               'Trapezoid': (N2, truncate(trapezoid_method(N2), precision), sum(t2) / len(t2)),
+               'Monte Carlo': (N3, truncate(monte_carlo(N3), precision), sum(t3) / len(t3))}
     return methods
