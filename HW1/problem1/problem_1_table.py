@@ -46,6 +46,8 @@ def plot_newton_table():
 
     plt.show()
 
+# ----------------------------------
 # Uncomment to run ->
-#plot_bisection_table()
-#plot_newton_table()
+# plot_bisection_table()
+# plot_newton_table()
+# ----------------------------------
