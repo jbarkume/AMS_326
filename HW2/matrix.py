@@ -1,7 +1,6 @@
-import numpy as np
+import time
 
-A = np.array([[1.0, 2.0, 2.0], [4.0, 4.0, 2.0], [4.0, 6.0, 4.0]])
-print("A = ", A)
+import numpy as np
 
 
 # Returns tuple of matrices where first element is L and second element is U in "matrix = LU"
@@ -23,8 +22,8 @@ def lu_decomposition(A):
 
     # print LU after first step
     print("\nFirst Step:\n")
-    print("L = ", L)
-    print("U = ", U)
+    print("L = \n", L)
+    print("U = \n", U)
 
     # use multiplier to turn entry [3,1] to zero
     multiplier = -(U[2][0] / U[0][0])
@@ -33,8 +32,8 @@ def lu_decomposition(A):
 
     # print LU after second step
     print("\nSecond Step:\n")
-    print("L = ", L)
-    print("U = ", U)
+    print("L = \n", L)
+    print("U = \n", U)
 
     # user multiplier to turn entry [3,2] to zero
     multiplier = -(U[2][1] / U[1][1])
@@ -43,8 +42,8 @@ def lu_decomposition(A):
 
     # print LU after third step
     print("\nThird Step:\n")
-    print("L = ", L)
-    print("U = ", U)
+    print("L = \n", L)
+    print("U = \n", U)
 
     # return tuple with L as first element and U as second
     return L, U
@@ -55,7 +54,10 @@ def axequalsb(A, b):
     print("\nFinding solution to Ax = b...\n")
 
     # Find LU decomposition of A so that Ax = b becomes LUx = b
+    t1 = time.time()
     decomp = lu_decomposition(A)
+    decomp_time = "{:.3e}".format(time.time()-t1)
+    print("\nTime to find LU decomposition of A: " + str(decomp_time) + " nanoseconds")
     L = decomp[0]
     U = decomp[1]
 
@@ -76,4 +78,22 @@ def axequalsb(A, b):
     return X
 
 
-X = axequalsb(A, np.array([11.0, 18.0, 28.0]))
+# Enter Arguments for A and b
+# Make sure A and b all contain elements of the same type
+# --------------------------------------------
+
+A = np.array([[1.0, 2.0, 2.0],
+              [4.0, 4.0, 2.0],
+              [4.0, 6.0, 4.0]])
+
+b = np.array([11.0,
+              18.0,
+              28.0])
+
+# -------------------------------------------
+
+print("A = ", A)
+init_time = time.time()
+X = axequalsb(A, b)
+final_time = "{:.3e}".format(time.time() - init_time)
+print("\nTime to find solutions to Ax = b: " + str(final_time) + " nanoseconds")
