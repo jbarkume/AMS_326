@@ -8,6 +8,7 @@ print("A = ", A)
 # expects the first entry in the matrix to be 1.0
 def lu_decomposition(A):
     print("\nFinding LU decomposition...\n")
+
     # initialize L to be identity 3x3 matrix
     L = np.identity(3)
 
@@ -16,10 +17,12 @@ def lu_decomposition(A):
     # rearranging we get that:
     multiplier = -(A[1][0] / A[0][0])
     U = np.array([A[0], A[1] + (A[0] * multiplier), A[2]])
+
     # update L to be negative of multiplier
     L[1][0] = -multiplier
+
     # print LU after first step
-    print("\n\nFirst Step:\n")
+    print("\nFirst Step:\n")
     print("L = ", L)
     print("U = ", U)
 
@@ -27,8 +30,9 @@ def lu_decomposition(A):
     multiplier = -(U[2][0] / U[0][0])
     U[2] += U[0] * multiplier
     L[2][0] = -multiplier
+
     # print LU after second step
-    print("\n\nSecond Step:\n")
+    print("\nSecond Step:\n")
     print("L = ", L)
     print("U = ", U)
 
@@ -36,8 +40,9 @@ def lu_decomposition(A):
     multiplier = -(U[2][1] / U[1][1])
     U[2] += U[1] * multiplier
     L[2][1] = -multiplier
-    # print LU after second step
-    print("\n\nThird Step:\n")
+
+    # print LU after third step
+    print("\nThird Step:\n")
     print("L = ", L)
     print("U = ", U)
 
@@ -48,6 +53,7 @@ def lu_decomposition(A):
 # Takes in a 3x3 matrix A and a vector b where we want to solve Ax = b
 def axequalsb(A, b):
     print("\nFinding solution to Ax = b...\n")
+
     # Find LU decomposition of A so that Ax = b becomes LUx = b
     decomp = lu_decomposition(A)
     L = decomp[0]
