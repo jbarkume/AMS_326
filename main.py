@@ -1,11 +1,9 @@
-import math
-import random
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
-def f(t):
-    if t == 0:
-        return 1
-    return t^3
+df = pd.read_csv('https://raw.githubusercontent.com/Codecademy/datasets/master/streeteasy/streeteasy.csv')
 
-
+print(df.head())
 
 
