@@ -96,3 +96,4 @@ U = tup[1]
 print("L = \n", L)
 print("\nU = \n", U)
 print("\nX = \n", axequalsb(A, b))
+
